@@ -13,11 +13,11 @@ public class Duty implements Serializable {
 
 	private Ou ou;
 	
-	private List<Function> functionList;
+	private List<String> functionList;
 	
 	public Duty(){}
 	
-	public Duty(String id, String name,Ou ou,List<Function> functionList) {
+	public Duty(String id, String name,Ou ou,List<String> functionList) {
 		this.id = id;
 		this.name = name;
 		this.ou = ou;
@@ -48,11 +48,11 @@ public class Duty implements Serializable {
 		this.ou = ou;
 	}
 
-	public List<Function> getFunctionList() {
+	public List<String> getFunctionList() {
 		return functionList;
 	}
 
-	public void setFunctionList(List<Function> functionList) {
+	public void setFunctionList(List<String> functionList) {
 		this.functionList = functionList;
 	}
 	

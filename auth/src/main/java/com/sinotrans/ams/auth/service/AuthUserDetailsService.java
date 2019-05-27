@@ -68,13 +68,20 @@ public class AuthUserDetailsService implements UserDetailsService {
 	//TODO
 	private List<Duty> getDutyList(String username) {
 		List<Duty> list = new ArrayList<>();
-		list.add(new Duty("1","职位一",new Ou("81","公司一"),new ArrayList<>()));
-		list.add(new Duty("2","职位二",new Ou("82","公司二"),new ArrayList<>()));
+		list.add(new Duty("1","职位一",new Ou("81","公司一"),getFunctionList()));
+		list.add(new Duty("2","职位二",new Ou("82","公司二"),getFunctionList()));
 		return list;
 	}
 
 	private Duty getCurrentDuty(String username) {
-		return new Duty("1","职位一",new Ou("81","公司一"),new ArrayList<>());
+		return new Duty("1","职位一",new Ou("81","公司一"),getFunctionList());
+	}
+
+	private List<String> getFunctionList() {
+		List<String> functionList = new ArrayList<>();
+		functionList.add("dashboard");
+		functionList.add("zcgl");
+		return functionList;
 	}
 
 	@RequestMapping("/user")

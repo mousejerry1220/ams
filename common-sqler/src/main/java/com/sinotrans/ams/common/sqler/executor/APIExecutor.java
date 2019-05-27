@@ -15,14 +15,7 @@ public abstract class APIExecutor {
 	}
 
 	public Object exec(ExecuteContext context){
-		
-		//设置最后更新时间
-		if(daoDef.getUpdateTimestamp() != null){
-			context.getParams().put("_updateTimestamp", daoDef.getUpdateTimestamp());
-		}
-		
 		String script =StringUtils.processTemplate(daoDef.getScriptContent(), context.getParams());
-		
 		return execute(script,context);
 	}
 	

@@ -39,7 +39,7 @@ public class ExecutorFactory {
 			return new SQLProcedureExecutor(apiDef);
 		}
 		
-		throw new RuntimeException("无效的API配置,请确定API类型为SEARCH_OBJECT、SEARCH_LIST、SEARCH_PAGE、GROOVY_SCRIPT、SQL_PROCEDURE其中之一");
+		throw new RuntimeException("无效的API配置,请确定API类型为SEARCH_OBJECT、SEARCH_LIST、SEARCH_PAGE、GROOVY_SCRIPT、UPDATE_SQL、SQL_PROCEDURE其中之一");
 	}
 	
 }

@@ -6,24 +6,18 @@ public class Function implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	private String id;
-	
-	private String name;
+	private String index;
 
-	public String getId() {
-		return id;
+	public Function(String index) {
+		this.index = index;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String getIndex() {
+		return index;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setIndex(String index) {
+		this.index = index;
 	}
 
 }

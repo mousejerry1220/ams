@@ -79,10 +79,10 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 			Object message = obj;
 			if(!"json".equalsIgnoreCase(paramsType)){
 				message = JSON.toJSONString(obj.getResult());
-				if(message!=null && ((String)message).getBytes().length > 1024){
-					message = Base64.encodeBase64String(GZIPUtils.compress(((String)message).getBytes()));
-					r.put("compressFlag", "Y");
-				}
+//				if(message!=null && ((String)message).getBytes().length > 1024){
+//					message = Base64.encodeBase64String(GZIPUtils.compress(((String)message).getBytes()));
+//					r.put("compressFlag", "Y");
+//				}
 			}
 			r.put(MESSAGE, message);
 		}
