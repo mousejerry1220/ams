@@ -71,15 +71,13 @@ public class TaskScheduler {
 								try {
 									updateDatabase(task);
 								} catch (DocumentException e) {
-									logError(task, now, e);
-									String error = ExceptionUtils.getExceptionStackTrace(e);
-									log.error(error);
+									//忽略
 								}
 							}
 						});
 					}
 				}catch (ParseException e) {
-					logError(task, now, e);
+					logError(task, now, e,null);
 				}
 				
 			}
@@ -100,7 +98,15 @@ public class TaskScheduler {
 		String result = invokeHttps.doPost(url, keyId);
 		task.setLastUpdateDate(now);
 		daoUtil.update("update ams_setting_data_service set last_update_date = :lastUpdateDate where service_code = :serviceCode ", task);
-		Document doc = DocumentHelper.parseText(result);
+		Document doc = null;
+		try {
+			doc = DocumentHelper.parseText(result);
+		} catch (DocumentException e1) {
+			logError(task, now, e1,result);
+			String error = ExceptionUtils.getExceptionStackTrace(e1);
+			log.error(error);
+			throw e1;
+		}
 		Element root = doc.getRootElement();
 		List<Element> lines = root.elements("LINE");
 		@SuppressWarnings("unchecked")
@@ -120,7 +126,7 @@ public class TaskScheduler {
 		try{
 			results = daoUtil.batchUpdate(task.getUpdateSql(), datas);
 		}catch (Exception e) {
-			logError(task, now, e);
+			logError(task, now, e,result);
 			throw e;
 		}
 
@@ -146,7 +152,7 @@ public class TaskScheduler {
 			try{
 				daoUtil.batchUpdate(task.getInsertSql(), insertDatas);
 			}catch (Exception e) {
-				logError(task, now, e);
+				logError(task, now, e,result);
 				throw e;
 			}
 			
@@ -154,13 +160,14 @@ public class TaskScheduler {
 		
 	}
 
-	private void logError(DataTask task, Date now, Exception e) {
+	private void logError(DataTask task, Date now, Exception e,String result) {
 		String error = ExceptionUtils.getExceptionStackTrace(e);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("serviceCode", task.getServiceCode());
 		map.put("executeDate", now);
 		map.put("error", error);
-		daoUtil.update("INSERT INTO ams_setting_data_service_log(service_code,execute_date,error_content) VALUES (:serviceCode,:executeDate,:error);", map);
+		map.put("result", result);
+		daoUtil.update("INSERT INTO ams_setting_data_service_log(service_code,execute_date,error_content,result_content) VALUES (:serviceCode,:executeDate,:error,:result);", map);
 	}
 	
 }
