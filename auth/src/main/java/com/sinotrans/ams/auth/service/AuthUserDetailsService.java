@@ -57,7 +57,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 		user.setUsername(username);
 		user.setPassword(MD5Util.MD5Encode((String) userMap.get("PASSWORD"),"UTF-8"));
 		
-		Duty currentDuty = getcurrentDuty(username);
+		Duty currentDuty = getCurrentDuty(username);
 		List<Duty> dutyList = getDutyList(username);
 		
 		user.setCurrentDuty(currentDuty);
@@ -73,7 +73,7 @@ public class AuthUserDetailsService implements UserDetailsService {
 		return list;
 	}
 
-	private Duty getcurrentDuty(String username) {
+	private Duty getCurrentDuty(String username) {
 		return new Duty("1","职位一",new Ou("81","公司一"),new ArrayList<>());
 	}
 
