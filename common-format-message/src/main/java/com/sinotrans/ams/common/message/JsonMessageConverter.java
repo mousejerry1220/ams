@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -41,14 +42,21 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 			throws IOException, HttpMessageNotWritableException {
 		Map<String,Object> r = new HashMap<String,Object>();
 		String messageId = inputMessageHandle.getMessageId();
+		
+		String paramsType = inputMessageHandle.getParamsType();
+		
 		inputMessageHandle.destroyThreadLocal(null);
 		
 		if(messageId != null){
 			r.put("messageId", messageId);
 		}
 		
+		if(paramsType != null){
+			r.put("messageType", paramsType);
+		}
+		
 		if(obj instanceof ResponseSuccess){
-			onSuccess((ResponseSuccess)obj, type, outputMessage, r);
+			onSuccess((ResponseSuccess)obj, type, outputMessage, r , paramsType);
 			return ;
 		}
 		
@@ -62,7 +70,6 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 		}
 		
 		super.writeInternal(obj, type, outputMessage);
-//		onError(new ResponseError(450,"返回值不符合规范，必须为ResponseResult类型") , type, outputMessage, r);
 	}
 
 	private void onError(ResponseError obj, Type type, HttpOutputMessage outputMessage, Map<String, Object> r)
@@ -72,17 +79,16 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 		super.writeInternal(r, type, outputMessage);
 	}
 
-	private void onSuccess(ResponseSuccess obj, Type type, HttpOutputMessage outputMessage, Map<String, Object> r) throws IOException {
-		String paramsType = inputMessageHandle.getParamsType();
+	private void onSuccess(ResponseSuccess obj, Type type, HttpOutputMessage outputMessage, Map<String, Object> r,String paramsType) throws IOException {
 		r.put(STATUS, SUCCESS_CODE);
 		if(!StringUtils.isEmpty(obj)){
 			Object message = obj;
 			if(!"json".equalsIgnoreCase(paramsType)){
 				message = JSON.toJSONString(obj.getResult());
-//				if(message!=null && ((String)message).getBytes().length > 1024){
-//					message = Base64.encodeBase64String(GZIPUtils.compress(((String)message).getBytes()));
-//					r.put("compressFlag", "Y");
-//				}
+				if(message!=null && ((String)message).getBytes().length > 1024){
+					message = Base64.encodeBase64String(GZIPUtils.compress(((String)message).getBytes()));
+					r.put("compressFlag", "Y");
+				}
 			}
 			r.put(MESSAGE, message);
 		}

@@ -19,7 +19,7 @@ public class AssetsService {
 
 	@Autowired
 	ScriptService scriptService;
-
+	
 	/**
 	 * 资产录入
 	 * @param params

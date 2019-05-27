@@ -1,3 +1,4 @@
+  
 eureka: 
   client:
     service-url:
@@ -6,6 +7,8 @@ eureka:
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
     prefer-ip-address: true
 spring: 
+  application: 
+    name: ams
   datasource: 
        username: tdsqlsys_normal
        password: 2MYqLEKqa9gz&iaO^3IY
@@ -13,3 +16,9 @@ spring:
        url: jdbc:mysql://172.30.144.72:4001/ams    
 server: 
   port: 8082
+security:
+  oauth2: 
+    resource:
+      id: ams
+      user-info-uri: http://localhost:5000/user
+      prefer-token-info: false

@@ -14,4 +14,5 @@ import org.springframework.context.annotation.Import;
 @Import({FormatMessageRegistrar.class,InputMessageHandle.class,AopServiceHandle.class,JsonMessageConverter.class})
 public @interface EnableFormatMessage {
 	
+	
 }

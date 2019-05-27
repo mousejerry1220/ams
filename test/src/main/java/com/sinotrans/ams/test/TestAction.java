@@ -58,6 +58,8 @@ public class TestAction {
 	 *      "message"      : {}            //业务返回的内容
 	 * 		"error"        : "错误原因"      //错误原因
 	 *      "status"       : 0             //成功返回0 ，非0为失败
+	 *      "compressFlag" : "N"		   //是否压缩，只有当messageType=string是有效，如果数据量较大时，可以选用gzip压缩，会将params参数压缩传递
+	 *      "messageType"  : "string"      //返回与请求段相同的消息格式类型 取值范围：string/json
 	 * }
 	 * 
 	 */

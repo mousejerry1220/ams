@@ -13,7 +13,7 @@ public class AopServiceHandle {
 	@Autowired
 	InputMessageHandle inputMessageHandle;
 
-	@Before("execution(* *..*.*Service(..))")
+	@Before("execution(* com.sinotrans..*.*Service(..))")
 	public void paramsHandle(JoinPoint point) throws Throwable {
 		if (point.getArgs().length > 0) {
 			if (point.getArgs()[0] instanceof JSONObject) {
