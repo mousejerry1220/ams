@@ -22,7 +22,9 @@ public class GZIPUtils {
         GZIPOutputStream gzip = null;  
         try {  
             gzip = new GZIPOutputStream(out);  
-            gzip.write(bytes);  
+            gzip.write(bytes);
+            gzip.finish();
+            gzip.flush();
             return out.toByteArray();  
         } catch (IOException e) {  
         	throw new RuntimeException("GZIP压缩error", e);
