@@ -16,6 +16,35 @@ public class User implements UserDetails{
 	private String username;
 	
 	private List<GrantedAuthority> authorityList;
+	
+	//业务字段
+	private Duty currentDuty;
+
+	private List<Duty> dutyList;
+	
+	public List<GrantedAuthority> getAuthorityList() {
+		return authorityList;
+	}
+
+	public void setAuthorityList(List<GrantedAuthority> authorityList) {
+		this.authorityList = authorityList;
+	}
+
+	public Duty getCurrentDuty() {
+		return currentDuty;
+	}
+
+	public void setCurrentDuty(Duty currentDuty) {
+		this.currentDuty = currentDuty;
+	}
+
+	public List<Duty> getDutyList() {
+		return dutyList;
+	}
+
+	public void setDutyList(List<Duty> dutyList) {
+		this.dutyList = dutyList;
+	}
 
 	public void setAuthorities(List<GrantedAuthority> authorityList) {
 		this.authorityList = authorityList;

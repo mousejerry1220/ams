@@ -1,7 +1,9 @@
 package com.sinotrans.ams.auth.service;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,25 @@ public class AuthUserDetailsService implements UserDetailsService {
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(MD5Util.MD5Encode((String) userMap.get("PASSWORD"),"UTF-8"));
+		
+		Duty currentDuty = getcurrentDuty(username);
+		List<Duty> dutyList = getDutyList(username);
+		
+		user.setCurrentDuty(currentDuty);
+		user.setDutyList(dutyList);
 		return user;
+	}
+
+	//TODO
+	private List<Duty> getDutyList(String username) {
+		List<Duty> list = new ArrayList<>();
+		list.add(new Duty("1","职位一",new Ou("81","公司一"),new ArrayList<>()));
+		list.add(new Duty("2","职位二",new Ou("82","公司二"),new ArrayList<>()));
+		return list;
+	}
+
+	private Duty getcurrentDuty(String username) {
+		return new Duty("1","职位一",new Ou("81","公司一"),new ArrayList<>());
 	}
 
 	@RequestMapping("/user")
