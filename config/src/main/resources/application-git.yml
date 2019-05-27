@@ -1,0 +1,20 @@
+server:
+  port: 8771
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}:${spring.application.name}
+    prefer-ip-address: true
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/qmakesoft/config_repository
+          search-paths: /configs/dev
+          username: qmakesoft
+          password: qmakesoft123456
+      label: master
+      

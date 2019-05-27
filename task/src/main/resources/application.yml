@@ -1,0 +1,15 @@
+spring: 
+  datasource: 
+     username: tdsqlsys_normal
+     password: 2MYqLEKqa9gz&iaO^3IY
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     url: jdbc:mysql://172.30.144.72:4001/ams    
+server: 
+  port: 8083
+data: 
+  synchronization:
+    uri: https://172.30.254.161:8065/erp/v1/CUX_FA_HOME.MAIN
+    keyId: 3630c7c4-9879-4ff1-8688-706463e9193f
+    businessCode: "01999"
+logging:
+  config: classpath:logback-boot.xml

@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  tomcat:
+    accept-count: 100
+    max-threads: 100
+    max-connections: 200
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
+zuul:
+  semaphore:
+    max-semaphores: 200 #信号量
+  host: 
+    socket-timeout-millis: 60000 
+    connect-timeout-millis: 60000
+    max-total-connections: 300
+  routes:
+    auth:
+      path: /auth/**
+      sensitiveHeaders: "*"
+      serviceId: auth
+    ams:
+      path: /ams/**
+      sensitiveHeaders: "*"
+      serviceId: ams
+    files: 
+      path: /files/**
+      sensitiveHeaders: "*"
+      serviceId: files
+ribbon: 
+  ConnectTimeout: 6000 #ribbon转发后台服务的最大连接时间
+  ReadTimeout: 30000 #ribbon转发后台服务的最大读取时间
+  MaxConnectionPerHost: 200 #每个host的最大连接数
+  MaxTotalConnections: 1000 #ribbon的最大连接数
+  PoolMaxThreads: 1000 #ribbon的最大工作线程数

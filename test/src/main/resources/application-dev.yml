@@ -1,0 +1,14 @@
+spring: 
+  datasource: 
+     username: qmakesoft
+     password: 123456
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     url: jdbc:mysql://120.77.219.50:3306/oneinstack
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+server: 
+  port: 8083
+test: 
+  value: jerry test by loacl 

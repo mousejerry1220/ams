@@ -1,0 +1,23 @@
+server:
+  port: 8771
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}:${spring.application.name}
+    prefer-ip-address: true
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      server:
+        svn:
+          uri: https://10.0.43.231:9999/svn/FS_IBM/001.Resource/EMS3.0/JAVA/configs/config/dev/
+          username: ibm.ibm12
+          password: 65657878
+          search-paths: test
+        default-label: config
+  profiles:
+    active: subversion

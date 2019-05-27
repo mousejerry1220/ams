@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: test
+  profiles:
+    active: dev    #本地选择application-${spring.profiles.active}.yml文件 即：application-dev.yml
+  cloud:           #远程配置会覆盖本地配置
+    config:
+      profile: dev #远程选择${spring.application.name}-${spring.profiles.active}.yml文件  即：test-dev.yml
+      uri: http://localhost:8771
+
+#以下配置让应用可以通过 /actuator/refresh 刷新远程配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'refresh'
+
+#默认配置服务隔离策略的超时时间，具体服务中可以覆盖
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
