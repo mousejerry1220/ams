@@ -44,6 +44,8 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 		
 		String paramsType = inputMessageHandle.getParamsType();
 		
+		String returnCompressFlag = inputMessageHandle.getReturnCompressFlag();
+		
 		inputMessageHandle.destroyThreadLocal(null);
 		
 		if(messageId != null){
@@ -55,7 +57,7 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 		}
 		
 		if(obj instanceof ResponseSuccess){
-			onSuccess((ResponseSuccess)obj, type, outputMessage, r , paramsType);
+			onSuccess((ResponseSuccess)obj, type, outputMessage, r , paramsType, returnCompressFlag);
 			return ;
 		}
 		
@@ -78,13 +80,13 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 		super.writeInternal(r, type, outputMessage);
 	}
 
-	private void onSuccess(ResponseSuccess obj, Type type, HttpOutputMessage outputMessage, Map<String, Object> r,String paramsType) throws IOException {
+	private void onSuccess(ResponseSuccess obj, Type type, HttpOutputMessage outputMessage, Map<String, Object> r,String paramsType , String returnCompressFlag) throws IOException {
 		r.put(STATUS, SUCCESS_CODE);
 		if(!StringUtils.isEmpty(obj)){
 			Object message = obj;
 			if(!"json".equalsIgnoreCase(paramsType)){
 				message = JSON.toJSONString(obj.getResult());
-				if(message!=null && ((String)message).getBytes().length > 1024){
+				if("Y".equals(returnCompressFlag) && message!=null && ((String)message).getBytes().length > 1024){
 					message = Base64.encodeBase64String(GZIPUtils.compress(((String)message).getBytes()));
 					r.put("compressFlag", "Y");
 				}

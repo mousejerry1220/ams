@@ -13,13 +13,17 @@ public class InputMessageHandle {
 	
 	public static final ThreadLocal<String> threadLocalParamsType = new ThreadLocal<>();
 	
+	public static final ThreadLocal<String> threadLocalReturnCompressFlag = new ThreadLocal<>();
+	
 	private final String inputParamsName = "params";
 	
 	private final String inputMessageIdName = "messageId";
 	
 	private final String inputParamsTypeName = "paramsType";
 	
-	private final String inputCompressFlag = "compressFlag";
+	private final String inputCompressFlagName = "compressFlag";
+	
+	private final String returnCompressFlagName = "returnCompressFlag";
 	
 	public String getInputParamsTypeName() {
 		return inputParamsTypeName;
@@ -33,6 +37,14 @@ public class InputMessageHandle {
 		return inputMessageIdName;
 	}
 	
+	public String getReturnCompressFlagName() {
+		return returnCompressFlagName;
+	}
+	
+	public String getInputCompressFlagName() {
+		return inputCompressFlagName;
+	}
+
 	public void setMessageId(String messageId){
 		threadLocalMessageId.set(messageId);
 	}
@@ -43,6 +55,10 @@ public class InputMessageHandle {
 	
 	public String getMessageId(){
 		return threadLocalMessageId.get();
+	}
+	
+	public String getReturnCompressFlag(){
+		return threadLocalReturnCompressFlag.get();
 	}
 
 	private JSONObject getParams(JSONObject inputParams) {
@@ -75,7 +91,7 @@ public class InputMessageHandle {
 
 	private void formatStringParams(JSONObject inputParams, JSONObject formatParams) {
 		String _params = inputParams.getString(getInputParamsName());
-		String compressFlag = inputParams.getString(inputCompressFlag);
+		String compressFlag = inputParams.getString(getInputCompressFlagName());
 		if("Y".equals(compressFlag)){
 			_params = decompression(_params);
 		}
@@ -100,8 +116,8 @@ public class InputMessageHandle {
 	}
 
 	public JSONObject handle(JSONObject inputParams) {
-		String messageId = inputParams.getString(getInputMessageIdName());
-		threadLocalMessageId.set(messageId);
+		threadLocalMessageId.set(inputParams.getString(getInputMessageIdName()));
+		threadLocalReturnCompressFlag.set(inputParams.getString(getReturnCompressFlagName()));
 		threadLocalParamsType.set(inputParams.getString(getInputParamsTypeName()));
 		return getParams(inputParams);
 	}
@@ -109,6 +125,7 @@ public class InputMessageHandle {
 	public void destroyThreadLocal(Object object) {
 		threadLocalMessageId.set(null);
 		threadLocalParamsType.set(null);
+		threadLocalReturnCompressFlag.set(null);
 	}
 	
 }
