@@ -56,6 +56,8 @@ public class AuthUserDetailsService implements UserDetailsService {
 		User user = new User();
 		user.setUsername(username);
 		user.setPassword(MD5Util.MD5Encode((String) userMap.get("PASSWORD"),"UTF-8"));
+		user.setDuty((String)userMap.get("DUTY"));
+		user.setLanguage((String)userMap.get("LANGUAGE"));
 		
 		Duty currentDuty = getCurrentDuty(username);
 		List<Duty> dutyList = getDutyList(username);

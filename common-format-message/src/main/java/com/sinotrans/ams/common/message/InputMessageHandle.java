@@ -121,7 +121,7 @@ public class InputMessageHandle {
 		threadLocalParamsType.set(inputParams.getString(getInputParamsTypeName()));
 		return getParams(inputParams);
 	}
-
+	
 	public void destroyThreadLocal(Object object) {
 		threadLocalMessageId.set(null);
 		threadLocalParamsType.set(null);

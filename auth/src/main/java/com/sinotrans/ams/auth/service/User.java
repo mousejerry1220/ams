@@ -17,6 +17,10 @@ public class User implements UserDetails{
 	
 	private List<GrantedAuthority> authorityList;
 	
+	private String duty;
+	
+	private String language;
+	
 	//业务字段
 	private Duty currentDuty;
 
@@ -95,6 +99,22 @@ public class User implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public String getDuty() {
+		return duty;
+	}
+
+	public void setDuty(String duty) {
+		this.duty = duty;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 	
 }
