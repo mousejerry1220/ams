@@ -1,17 +1,12 @@
 package com.sinotrans.ams.ams;
 
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
-import com.sinotrans.ams.common.message.AopServiceHandle;
 import com.sinotrans.ams.common.message.EnableFormatMessage;
-import com.sinotrans.ams.common.message.InputMessageHandle;
-import com.sinotrans.ams.common.message.JsonMessageConverter;
 import com.sinotrans.ams.common.sqler.EnableSqler;
 
 @EnableResourceServer

@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sinotrans.ams.common.message.ResponseError;
 import com.sinotrans.ams.common.message.ResponseResult;
 import com.sinotrans.ams.common.message.ResponseSuccess;
 import com.sinotrans.ams.common.sqler.ScriptService;
-import com.sinotrans.ams.common.utils.StringUtils;
 
 @RestController
 @Transactional
@@ -27,13 +25,7 @@ public class AssetsService {
 	 */
 	@RequestMapping("/add")
 	public ResponseResult addService(@RequestBody JSONObject params){
-		
-		if(StringUtils.isEmpty(params.getString(""))){
-			return new ResponseError(10001,"某某数据不能为空");
-		}
-		
-		scriptService.execute("zcadd",params);
-		return new ResponseSuccess(null);
+		return null;
 	}
 	
 	/**
