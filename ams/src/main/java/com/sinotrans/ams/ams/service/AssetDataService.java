@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,29 +14,32 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sinotrans.ams.common.message.ResponseError;
 import com.sinotrans.ams.common.message.ResponseResult;
 import com.sinotrans.ams.common.message.ResponseSuccess;
 import com.sinotrans.ams.common.sqler.ScriptService;
 
+@CrossOrigin
 @RestController
 public class AssetDataService {
 
 	@Autowired
 	ScriptService scriptService;
 	
-	@RequestMapping("/data/{scriptCode}")
+	@RequestMapping(value="/data/{scriptCode}")
 	public ResponseResult dataService(
 			@RequestBody(required=false) JSONObject params,
 			@PathVariable(value="scriptCode",required=true) String scriptCode){
-		setParams(params);
+		params = setParams(params);
 		return new ResponseSuccess(scriptService.execute(scriptCode,params));
 	}
 
-	private void setParams(JSONObject params) {
+	private JSONObject setParams(JSONObject params) {
 		if(params == null){
 			params = new JSONObject();
 		}
 		params.putAll(getUserMap());
+		return params;
 	}
 
 	private JSONObject getUserMap(){
@@ -48,13 +52,16 @@ public class AssetDataService {
 		return userMap;
 	}
 	
-	@RequestMapping("/batch/searchList")
+	@RequestMapping(value="/batch/searchList")
 	public ResponseResult searchListService(@RequestBody(required=false) JSONObject params){
-		setParams(params);
+		params = setParams(params);
 		JSONArray result = new JSONArray();
 		Principal user = SecurityContextHolder.getContext().getAuthentication();
 		params.put("username", user.getName());
 		JSONArray keys = params.getJSONArray("keys");
+		if(keys == null || keys.size() == 0){
+			return new ResponseError(10100, "keys不能为空");
+		}
 		for(Object _key : keys){
 			String key = (String)_key;
 			Object list = scriptService.execute(key,params);

@@ -2,6 +2,7 @@ package com.sinotrans.ams.common.message;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,7 +114,7 @@ public class JsonMessageConverter extends FastJsonHttpMessageConverter4 {
 	protected void addDefaultHeaders(HttpHeaders headers, Object t, MediaType contentType)
 			throws IOException {
 		headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
-		headers.set("Access-Control-Allow-Origin", "*");
+//		headers.set("Access-Control-Allow-Origin", "*");
 		headers.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		super.addDefaultHeaders(headers, t, contentType);
 	}

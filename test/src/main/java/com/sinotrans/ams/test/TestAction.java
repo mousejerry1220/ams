@@ -44,10 +44,11 @@ public class TestAction {
 	 * * 按照规范写的Service，会通过AOP解析外层包。
 	 * 协议数据包格式为:
 	 * {
-	 * 		"messageId"    : "请求消息ID",  //消息唯一ID,服务端回复消息时会原样回复给客户端
-	 * 		"params"       : {},          //业务传递的JSON内容,即为服务中的JSONObject类型的params对象
-	 * 		"paramsType"   : "string",    //可选值string/json,描述params的类型,默认为string，该参数也规定了服务端返回值与返回类型一直
-	 * 		"compressFlag" : "N"          //是否压缩，只有当paramsType=string是有效，如果数据量较大时，可以选用gzip压缩，会将params参数压缩传递
+	 * 		"messageId"          : "请求消息ID",  //消息唯一ID,服务端回复消息时会原样回复给客户端
+	 * 		"params"             : {},          //业务传递的JSON内容,即为服务中的JSONObject类型的params对象
+	 * 		"paramsType"         : "string",    //可选值string/json,描述params的类型,默认为string，该参数也规定了服务端返回值与返回类型一直
+	 * 		"compressFlag"       : "N"          //是否压缩，只有当paramsType=string是有效，如果数据量较大时，可以选用gzip压缩，会将params参数压缩传递
+	 *      "returnCompressFlag" : "N"          //返回值是否支持压缩处理
 	 * }
 	 * @return 强制要求返回ResponseResult类型结果
 	 * 成功返回ResponseSuccess
