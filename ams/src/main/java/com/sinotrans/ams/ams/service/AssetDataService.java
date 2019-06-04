@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +45,11 @@ public class AssetDataService {
 
 	private JSONObject getUserMap(){
 		Principal user = SecurityContextHolder.getContext().getAuthentication();
-		Map<?,?> map = (Map<?, ?>) ((OAuth2Authentication)user).getUserAuthentication().getDetails();
+		Authentication ua = ((OAuth2Authentication)user).getUserAuthentication();
+		if(ua.getDetails() == null){
+			return new JSONObject();
+		}
+		Map<?,?> map = (Map<?, ?>) ua.getDetails();
 		JSONObject userMap = new JSONObject();
 		userMap.put("username", user.getName());
 		userMap.put("duty", map.get("duty"));

@@ -27,22 +27,17 @@ public class AssetsService {
 	 */
 	@RequestMapping("/asset/add")
 	public ResponseResult addService(@RequestBody JSONObject params){
-		
-		
-		
 		return new ResponseSuccess(params);
 	}
-	
+
 	/**
 	 * 资产修改
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping("/update")
+	@RequestMapping("/asset/update")
 	public ResponseResult updateService(@RequestBody JSONObject params){
 		return new ResponseSuccess(null);
 	}
-	
-	
 	
 }

@@ -7,8 +7,6 @@ eureka:
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
     prefer-ip-address: true
 spring: 
-  application: 
-    name: ams
   datasource: 
        username: tdsqlsys_normal
        password: 2MYqLEKqa9gz&iaO^3IY
