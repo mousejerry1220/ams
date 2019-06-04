@@ -4,6 +4,12 @@ server:
     accept-count: 100
     max-threads: 100
     max-connections: 200
+spring: 
+  servlet: 
+    multipart: 
+      max-file-size: 200Mb
+      max-request-size: 200Mb
+
 eureka:
   client:
     service-url:

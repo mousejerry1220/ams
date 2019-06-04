@@ -34,9 +34,7 @@ public class UploadFileHandle {
 		if(!standardServletMultipartResolver.isMultipart(request)){
 			throw new RuntimeException("上传文件参数有错误");
 		}
-		
 		MultipartHttpServletRequest multipartRequest = standardServletMultipartResolver.resolveMultipart(request);
-		
 		Map<String, List<MultipartFile>> map = multipartRequest.getMultiFileMap();
 		Set<String> keys = map.keySet();
 		Iterator<String> it = keys.iterator();
@@ -71,20 +69,19 @@ public class UploadFileHandle {
 		return uf;
 	}
 	
-	
-	public UploadFile upload(String name,String base64) throws IOException {
-		return upload(name, null, base64);
+	public UploadFile upload(String name,String base64Content) throws IOException {
+		return upload(name, null, base64Content);
 	}
 	
 	//上传base64编码格式的文件
-	public UploadFile upload(String name,String keyId,String base64) throws IOException {
-		if(base64 == null){
+	public UploadFile upload(String name,String keyId,String base64Content) throws IOException {
+		if(base64Content == null){
 			throw new IllegalArgumentException("图片不能为空");
 		}
 		if(StringUtils.isEmpty(keyId)){
 			keyId = StringUtils.UUID();
 		}
-		byte[] bytes = base64.getBytes();
+		byte[] bytes = base64Content.getBytes();
 		byte[] imageBytes = Base64.decodeBase64(bytes);
 		UploadFile up = new UploadFile();
 		int len = imageBytes.length;

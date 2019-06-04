@@ -10,12 +10,12 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +29,7 @@ import com.sinotrans.ams.common.message.ResponseSuccess;
 import com.sinotrans.ams.common.upload.UploadFile;
 import com.sinotrans.ams.common.upload.UploadFileHandle;
 
+@CrossOrigin
 @RefreshScope
 @RestController
 public class UploadFilesAction {
@@ -42,7 +43,26 @@ public class UploadFilesAction {
 	@Autowired
 	UploadFileConfig uploadFileConfig;
 	
-	final static String GET_FILE_SQL = "SELECT file_id AS `fileId` , file_name AS `name` , file_size AS `size` , created_date AS `uploadDate` , created_by AS `uploadBy`  FROM ams_fs_files where file_id = : fileId"; 
+	static Map<String,String> contentTypeMap = new HashMap<String,String>();
+	
+	static {
+		contentTypeMap.put(".JPEG", "image/jpeg");
+		contentTypeMap.put(".JPG", "image/jpeg");
+		contentTypeMap.put(".JPE", "image/jpeg");
+		contentTypeMap.put(".PNG", "image/png");
+		contentTypeMap.put(".PDF", "application/pdf");
+		contentTypeMap.put(".TIF", "image/tiff");
+		contentTypeMap.put(".TIFF", "image/tiff");
+		contentTypeMap.put(".GIF", "image/gif");
+		contentTypeMap.put(".DOC", "application/msword");
+		contentTypeMap.put(".DOCX", "application/msword");
+		contentTypeMap.put(".PPT", "application/x-ppt");
+		contentTypeMap.put(".PPTX", "application/x-ppt");
+		contentTypeMap.put(".XLS","application/vnd.ms-excel");
+		contentTypeMap.put(".XLSX","application/vnd.ms-excel");
+	}
+	
+	final static String GET_FILE_SQL = "SELECT file_id AS `fileId` , file_name AS `name` , file_size AS `size` , created_date AS `uploadDate` , created_by AS `uploadBy`, business_type as `businessType`  FROM ams_fs_files where file_id = :fileId"; 
 	
 	@RequestMapping(value = "/upload/{businessType}" , method = RequestMethod.POST)
 	public ResponseResult fileUploadService(
@@ -51,12 +71,12 @@ public class UploadFilesAction {
 		return new ResponseSuccess(uploadFileHandle.uploadFile(businessType,user.getName()));
 	}
 	
-	@RequestMapping(value = "/download/{fileId}" , method = RequestMethod.POST)
+	@RequestMapping(value = "/download/{fileId}" , method = RequestMethod.GET)
 	public void downloadService(
 			@PathVariable(name="fileId",required = true) String fileId) throws IOException{
 		UploadFile uploadFile = getUploadFile(fileId);
 		File file = getRealFile(uploadFile);
-		download(file, uploadFile.getName());
+		download(file,uploadFile.getName(), uploadFile.getExtension());
 	}
 
 	private File getRealFile(UploadFile uploadFile) throws IOException {
@@ -68,44 +88,22 @@ public class UploadFilesAction {
 		return file;
 	}
 	
-	@RequestMapping("/image/{fileId}")
-	public String image(@PathVariable(name="fileId",required = true) String fileId) throws IOException {
-		UploadFile uploadFile = getUploadFile(fileId);
-		File file = getRealFile(uploadFile);
-		image(file,uploadFile.getExtension());
-		return null;
-	}
-	
-	private String image(File file,String extension) throws IOException {
+	private void download(File file,String fileName,String extension) throws IOException {
 		if(!file.exists()){
 			fileNotFound();
-			return null;
+			return;
 		}
 		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-		String imageType = "image/jpeg";
-		if(extension.toUpperCase().endsWith(".JPEG") || extension.toUpperCase().endsWith(".JPG")){
-			imageType = "image/jpeg";
-		} else if(extension.toUpperCase().endsWith(".PNG")){
-			imageType = "image/png";
+		String contentType = contentTypeMap.get(extension.toUpperCase());;
+		if(contentType == null){
+			contentType = "application/octet-stream;charset=utf-8";
+			response.setHeader("Content-Disposition", "attachment;filename="+fileName);
+			response.setCharacterEncoding("UTF-8");
 		}
-		response.setContentType(imageType);
+		response.setContentType(contentType);
 		writeFile(response, file);
-		return null;
 	}
-	
-	private String download(File file,String fileName) throws IOException {
-		if(!file.exists()){
-			fileNotFound();
-			return null;
-		}
-		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-		String name = new String(fileName.replaceAll(" ","_").getBytes("GBK"),"ISO8859-1");
-		response.setContentType("application/octet-stream;charset=utf-8");
-		response.setHeader("Content-Disposition", "attachment;filename="+name);
-		response.setCharacterEncoding("UTF-8");
-		writeFile(response, file);
-		return null;
-	}
+
 	
 	private void writeFile(HttpServletResponse response, File file) throws IOException {
 		byte[] buff = Files.readAllBytes(file.toPath());
