@@ -27,6 +27,9 @@ public class AssetsService {
 	 */
 	@RequestMapping("/asset/add")
 	public ResponseResult addService(@RequestBody JSONObject params){
+		
+		
+		
 		return new ResponseSuccess(params);
 	}
 	

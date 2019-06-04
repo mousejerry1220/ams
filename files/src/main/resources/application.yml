@@ -1,0 +1,16 @@
+spring: 
+  application: 
+    name: files
+  datasource: 
+     username: tdsqlsys_normal
+     password: 2MYqLEKqa9gz&iaO^3IY
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     url: jdbc:mysql://172.30.144.72:4001/ams  
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+server: 
+  port: 1111
+upload: 
+  serverPath: D:\\tempFile 

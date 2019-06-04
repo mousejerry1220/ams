@@ -1,6 +1,7 @@
 package com.sinotrans.ams.common.upload;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UploadFile implements Serializable{
 
@@ -10,9 +11,44 @@ public class UploadFile implements Serializable{
 
 	private String name;
 
-	private String keyId;
+	private String fileId;
 
 	private Long size;
+	
+	private String businessType;
+	
+	private String uploadBy;
+	
+	private Date uploadDate;
+	
+	public Date getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	public String getExtension() {
+		int lastPointIndex = name.lastIndexOf(".");
+		return (name == null ? "" : (lastPointIndex > 0 ? name.substring(lastPointIndex) : ""));
+	}
+
+	public String getBusinessType() {
+		return businessType;
+	}
+
+	public void setBusinessType(String businessType) {
+		this.businessType = businessType;
+	}
+
+	public String getUploadBy() {
+		return uploadBy;
+	}
+
+	public void setUploadBy(String uploadBy) {
+		this.uploadBy = uploadBy;
+	}
 
 	public Long getSize() {
 		return size;
@@ -22,12 +58,12 @@ public class UploadFile implements Serializable{
 		this.size = size;
 	}
 
-	public String getKeyId() {
-		return keyId;
+	public String getFileId() {
+		return fileId;
 	}
 
-	public void setKeyId(String keyId) {
-		this.keyId = keyId;
+	public void setFileId(String fileId) {
+		this.fileId = fileId;
 	}
 
 	public byte[] getBody() {
