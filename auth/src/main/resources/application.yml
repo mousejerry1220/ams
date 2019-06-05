@@ -1,10 +1,10 @@
-#eureka: 
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka/
-#  instance:
-#    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
-#    prefer-ip-address: true
+eureka: 
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
+    prefer-ip-address: true
 spring: 
   datasource: 
      username: tdsqlsys_normal

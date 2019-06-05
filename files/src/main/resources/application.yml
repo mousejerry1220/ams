@@ -13,18 +13,18 @@ spring:
       max-file-size: 200Mb
       max-request-size: 200Mb
 
-eureka:
+eureka: 
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-  instance:
+  instance: 
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}:@project.version@
     prefer-ip-address: true
 
 server: 
   port: 1111
 upload: 
-  serverPath: D:\\tempFile 
+  serverPath: /app/files
 
 security:
   oauth2: 
